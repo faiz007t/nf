@@ -1,14 +1,14 @@
-**服务器解锁Netflix检测脚本**
+**Server Unblock Netflix Detection Script**
 ----------------
 
-脚本来自互联网
+script from internet
 
-**请执行以下一键脚本即可**
+**Please execute the following one-click script**
 
     bash <(curl -sSL https://raw.githubusercontent.com/Netflixxp/NF/main/nf.sh)
 
 
-原作者：[@CoiaPrant][1] [@zerocloud][2]
+Original author: [@CoiaPrant][1] [@zerocloud][2]
 
 
   [1]: https://t.me/CoiaPrant
