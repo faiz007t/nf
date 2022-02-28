@@ -326,21 +326,13 @@ function MediaUnlockTest_BBC() {
 # Streaming Unlock Test - Netflix
 function MediaUnlockTest_Netflix() {
     echo -n -e " Netflix:\t\t\t->\c";
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.netflix.com/" 2>&1`;
+    local result=`curl --user-agent "${UA_Browser}" -${1} -fsSL --max-time 30 https://www.netflix.com/ 2>&1 | grep "country" | cut -d '"' -f4`;
     
-    if [[ "$result" == "curl"* ]];then
+    if [ ! -n "$result" ]; then
         echo -n -e "\r Netflix:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Netflix:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
-        return;
-    fi
-    
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.netflix.com/" | grep "id" | cut -d '"' -f4`;
-    if [ -n "$result" ]; then
+    else
         echo -n -e "\r Netflix:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Netflix:\t\t\t${result}" >> ${LOG_FILE};
-        return;
     fi
-    
-    echo -n -e "\r Netflix:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Netflix:\t\t\tNo" >> ${LOG_FILE};
-    return;
 }
 
 # Streaming Unlock Test - YouTube Region
