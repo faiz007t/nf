@@ -17,7 +17,7 @@ LOG_FILE="check.log";
 
 clear;
 echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
-echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};
+echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};\n\n
 echo -e " ** current version: v${shell_version}" && echo -e " ** current version: v${shell_version}" >> ${LOG_FILE};
 echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LOG_FILE};
 
@@ -579,12 +579,9 @@ function ISP(){
     local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
         echo " ** IP: ${ip}"
-        echo " ** ISP: ${isp}" && echo " ** ISP: ${isp}" >> ${LOG_FILE};
+        echo " ** ISP: ${isp}" && echo " ** ISP: ${isp}" >> ${LOG_FILE};\n\n
     fi
 }
-
-clear;
-echo -e "${Font_Yellow}Checking Unlock Streaming Sites${Font_Suffix}" && echo -e "Checking Unlock Streaming Sites" >> ${LOG_FILE};
 
 # Media Unlock Test Sites
 function MediaUnlockTest() {
