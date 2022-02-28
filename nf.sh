@@ -17,7 +17,8 @@ LOG_FILE="check.log";
 
 clear;
 echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
-echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};\n\n
+echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};
+echo -e "${Font_Yellow}Checking Unlock Streaming Sites${Font_Suffix}" && echo -e "Checking Unlock Streaming Sites" >> ${LOG_FILE};
 echo -e " ** current version: v${shell_version}" && echo -e " ** current version: v${shell_version}" >> ${LOG_FILE};
 echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LOG_FILE};
 
@@ -364,7 +365,7 @@ function MediaUnlockTest_Netflix() {
 }
 
 # Streaming Unlock Test - YouTube
-function MediaUnlockTest_YouTube() {
+function MediaUnlockTest_YouTube_Region() {
     echo -n -e " YouTube:\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
@@ -579,7 +580,7 @@ function ISP(){
     local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
         echo " ** IP: ${ip}"
-        echo " ** ISP: ${isp}" && echo " ** ISP: ${isp}" >> ${LOG_FILE};\n\n
+        echo " ** ISP: ${isp}" && echo " ** ISP: ${isp}" >> ${LOG_FILE};
     fi
 }
 
@@ -618,6 +619,13 @@ fi
 jq -V > /dev/null 2>&1;
 if [ $? -ne 0 ];then
     InstallJQ;
+fi
+echo " ** Testing IPv4 Unlocking" && echo " ** Testing IPv4 Unlocking" >> ${LOG_FILE};
+check4=`ping 1.1.1.1 -c 1 2>&1`;
+if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+    MediaUnlockTest 4;
+else
+    echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
 fi
 echo -e "";
 echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
