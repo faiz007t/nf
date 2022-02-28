@@ -18,7 +18,7 @@ LOG_FILE="check.log";
 clear;
 echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
 echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};
-echo -e "${Font_Yellow}Streaming media sharing platform https://jcnf.xyz/nf${Font_Suffix}" && echo -e "Streaming media sharing platform https://jcnf.xyz/nf" >> ${LOG_FILE};
+echo -e "${Font_Yellow}Checking Unlock Streaming Sites${Font_Suffix}" && echo -e "Checking Unlock Streaming Sites" >> ${LOG_FILE};
 echo -e " ** current version: v${shell_version}" && echo -e " ** current version: v${shell_version}" >> ${LOG_FILE};
 echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LOG_FILE};
 
