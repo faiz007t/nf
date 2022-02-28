@@ -102,7 +102,7 @@ function MediaUnlockTest_HBONow() {
     fi
 }
 
-# Streaming Unlock Test - Animation Crazy 
+# Streaming Unlock Test - Animation Crazy
 function MediaUnlockTest_BahamutAnime() {
     echo -n -e " Bahamut Anime:\t\t\t\t->\c";
     local tmpresult=`curl -${1} --user-agent "${UA_Browser}" --max-time 30 -fsSL 'https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=14667' 2>&1`;
@@ -365,22 +365,22 @@ function MediaUnlockTest_Netflix() {
 }
 
 # Streaming Unlock Test - YouTube
-function MediaUnlockTest_YouTube_Region() {
-    echo -n -e " YouTube Region:\t\t\t->\c";
+function MediaUnlockTest_YouTube() {
+    echo -n -e " YouTube:\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r YouTube Region:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r YouTube:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " YouTube:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.youtube.com/red" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
-        echo -n -e "\r YouTube Region:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\t${result}" >> ${LOG_FILE};
+        echo -n -e "\r YouTube:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube:\t\t\t${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r YouTube Region:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\tNo" >> ${LOG_FILE};
+    echo -n -e "\r YouTube:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube:\t\t\tNo" >> ${LOG_FILE};
     return;
 }
 
