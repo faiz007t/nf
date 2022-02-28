@@ -56,7 +56,7 @@ function PharseJSON() {
 
 function PasteBin_Upload() { 
     local uploadresult="$(curl -fsL -X POST \
-        --url https://pastebin.com \
+        --url https://paste.ubuntu.com \
         --output /dev/null \
         --write-out "%{url_effective}\n" \
         --data-urlencode "content@${PASTEBIN_CONTENT:-/dev/stdin}" \
