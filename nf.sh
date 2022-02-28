@@ -102,7 +102,7 @@ function MediaUnlockTest_HBONow() {
     fi
 }
 
-# Streaming Unlock Test - Animation Crazy
+# Streaming Unlock Test - Animation Crazy 
 function MediaUnlockTest_BahamutAnime() {
     echo -n -e " Bahamut Anime:\t\t\t\t->\c";
     local tmpresult=`curl -${1} --user-agent "${UA_Browser}" --max-time 30 -fsSL 'https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=14667' 2>&1`;
