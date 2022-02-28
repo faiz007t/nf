@@ -54,7 +54,7 @@ function PharseJSON() {
     echo -n $1 | jq -r .$2;
 }
 
-function PasteBin_Upload() {
+function PasteBin_Upload() { 
     local uploadresult="$(curl -fsL -X POST \
         --url https://pastebin.com \
         --output /dev/null \
