@@ -333,7 +333,7 @@ function MediaUnlockTest_Netflix() {
         return;
     fi
     
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.netflix.com/" | sed 's/,/\n/g' | grep "country" | cut -d '"' -f4`;
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.netflix.com/" | grep "id" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
         echo -n -e "\r Netflix:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Netflix:\t\t\t${result}" >> ${LOG_FILE};
         return;
