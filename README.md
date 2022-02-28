@@ -1,4 +1,4 @@
-**Checking Streaming Sites Script**
+**Checking Unlock Streaming Sites**
 ----------------
 
 script from internet
