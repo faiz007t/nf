@@ -100,7 +100,7 @@ function MediaUnlockTest_HBONow() {
         # Download page failed, return error code
         echo -n -e "\r HBO Now:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
     fi
-}
+} 
 
 # Streaming Unlock Test - Animation Crazy
 function MediaUnlockTest_BahamutAnime() {
