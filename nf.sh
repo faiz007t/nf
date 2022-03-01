@@ -80,8 +80,7 @@ function MediaUnlockTest_Viu() {
     local timezone=$(PharseJSON "${result}" "timezone" 2>&1)
     local postal_code="$(PharseJSON "${result}" "postal_code" 2>&1)";
     if [ $? -eq 0 ];then
-        echo "timezone: ${timezone}"
-        echo "postal_code: ${postal_code}" >> ${LOG_FILE};
+        echo "timezone: ${timezone}" >> ${LOG_FILE};
     fi
 }
 
