@@ -69,7 +69,6 @@ function PasteBin_Upload() {
         echo -e "${Font_Red}Failed to generate report ${Font_Suffix}";
     fi
 }
-
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
@@ -77,11 +76,18 @@ function MediaUnlockTest_Viu() {
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local timezone=$(PharseJSON "${result}" "timezone" 2>&1)
-    local postal_code="$(PharseJSON "${result}" "postal_code" 2>&1)";
-    if [ $? -eq 0 ];then
-        echo "timezone: ${timezone}" >> ${LOG_FILE};
+    local result=$(PharseJSON "${result}" "timezone");
+    if [[ "$result" == "Asia\/Singapore" ]]; then
+        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}Yes (SG)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tYes (SG)" >> ${LOG_FILE};
+        return
     fi
+    
+    if [[ "$result" == "GEO_CHECK_FAIL" ]]; then
+        echo -n -e "\r Viu TV:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tNo" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r Viu.TV:\t\t\t\t${Font_Red}Failed (Unexpected Result: $result)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tFailed (Unexpected Result: $result)" >> ${LOG_FILE};
 }
 
 # Checking ISP
