@@ -78,7 +78,7 @@ function MediaUnlockTest_Viu() {
     fi
     local location="$(PharseJSON "${result}" "location" 2>&1)";
     if [ $? -eq 0 ];then
-        echo -n -e "\r Viu: ${location}" >> ${LOG_FILE};
+        echo " ** Viu: ${location}" >> ${LOG_FILE};
     fi
 }
 
