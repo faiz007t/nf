@@ -288,13 +288,13 @@ function MediaUnlockTest_Viu() {
         return
     fi
     local result=$(PharseJSON "${result}" "regionCode");
-    if [[ "$result" == "SG" ]]; then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}SG${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tSG" >> ${LOG_FILE};
+    if [[ "$result" == "MY" ]]; then
+        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}MY${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tMY" >> ${LOG_FILE};
         return
     fi
     
-    if [[ "$result" == "GEO_CHECK_FAIL" ]]; then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tNo" >> ${LOG_FILE};
+    if [[ "$result" == "MY" ]]; then
+        echo -n -e "\r Viu TV:\t\t\t\t${Font_Red}SG${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tSG" >> ${LOG_FILE};
         return;
     fi
     
