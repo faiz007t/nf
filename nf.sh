@@ -321,6 +321,7 @@ function MediaUnlockTest() {
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_YouTube_Region ${1};
     MediaUnlockTest_DisneyPlus ${1};
+    MediaUnlockTest_Viu ${1};
 }
 
 curl -V > /dev/null 2>&1;
