@@ -69,6 +69,7 @@ function PasteBin_Upload() {
         echo -e "${Font_Red}Failed to generate report ${Font_Suffix}";
     fi
 }
+
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
@@ -76,8 +77,8 @@ function MediaUnlockTest_Viu() {
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local result=$(PharseJSON "${result}" "timezone");
-    if [[ "$result" == "Asia/Singapore" ]]; then
+    local result=$(PharseJSON "${result}" "continent_code");
+    if [[ "$result" == "AS" ]]; then
         echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}Yes (SG)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tYes (SG)" >> ${LOG_FILE};
         return
     fi
