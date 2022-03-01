@@ -76,9 +76,11 @@ function MediaUnlockTest_Viu() {
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local organization="$(PharseJSON "${result}" "organization" 2>&1)";
+    local timezone=$(PharseJSON "${result}" "timezone" 2>&1)
+    local postal_code="$(PharseJSON "${result}" "postal_code" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
-        echo " ** Viu: ${organization}" >> ${LOG_FILE};
+        echo " ** timezone: ${timezone}"
+        echo " ** postal_code: ${postal_code}" && echo " ** country: ${country}" && echo " ** city: ${city}" >> ${LOG_FILE};
     fi
 }
 
