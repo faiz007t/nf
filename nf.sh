@@ -77,7 +77,7 @@ function MediaUnlockTest_Viu() {
         return
     fi
     local result=$(PharseJSON "${result}" "timezone");
-    if [[ "$result" == "Asia\/Singapore" ]]; then
+    if [[ "$result" == "Asia/Singapore" ]]; then
         echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}Yes (SG)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tYes (SG)" >> ${LOG_FILE};
         return
     fi
