@@ -121,6 +121,21 @@ jq -V > /dev/null 2>&1;
 if [ $? -ne 0 ];then
     InstallJQ;
 fi
+echo " ** Testing IPv4 Unlocking" && echo " ** Testing IPv4 Unlocking" >> ${LOG_FILE};
+check4=`ping 1.1.1.1 -c 1 2>&1`;
+if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+    MediaUnlockTest 4;
+else
+    echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
+fi
+
+echo " ** Testing IPv6 Unlocking" && echo " ** Testing IPv6 Unlocking" >> ${LOG_FILE};
+check6=`ping6 240c::6666 -c 1 2>&1`;
+if [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
+    MediaUnlockTest 6;
+else
+    echo -e "${Font_SkyBlue}The current host does not support IPv6, skip...${Font_Suffix}" && echo "The current host does not support IPv6, skip..." >> ${LOG_FILE};
+fi
 echo -e "";
 echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
 cat ${LOG_FILE} | PasteBin_Upload;
