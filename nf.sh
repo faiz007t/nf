@@ -280,6 +280,21 @@ function MediaUnlockTest_ViuTV() {
     echo -n -e "\r Viu.TV:\t\t\t\t${Font_Red}Failed (Unexpected Result: $result)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tFailed (Unexpected Result: $result)" >> ${LOG_FILE};
 }
 
+# Streaming Unlock Test - Viu
+function MediaUnlockTest_Viu() {
+    echo -n -e " Viu:\t\t\t\t->\c";
+    local result=`curl -sSL -${1} "https://www.viu.com/" 2>&1`;
+    if [[ "$result" == "curl"* ]];then
+        return
+    fi
+    local ip=$(PharseJSON "${result}" "ip" 2>&1)
+    local location="$(PharseJSON "${result}" "location" 2>&1) [$(PharseJSON "${result}" "vuclip" 2>&1) $(PharseJSON "${result}" "show_all" 2>&1)]";
+    if [ $? -eq 0 ];then
+        echo -n -e "\r IP: ${ip}"
+        echo -n -e "\r Viu: ${location}" && echo -n -e "\r Vuclip: ${vuclip}" && echo -n -e "\r Show All: ${show_all}" >> ${LOG_FILE};
+    fi
+}
+
 # Checking ISP
 function ISP(){
     local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
