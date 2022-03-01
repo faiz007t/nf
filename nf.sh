@@ -72,13 +72,13 @@ function PasteBin_Upload() {
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
-    local result=`curl -sSL -${1} "https://www.viu.com/" 2>&1`;
+    local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local location="$(PharseJSON "${result}" "location" 2>&1)";
+    local organization="$(PharseJSON "${result}" "organization" 2>&1)";
     if [ $? -eq 0 ];then
-        echo " ** Viu: ${location}" >> ${LOG_FILE};
+        echo " ** Viu: ${organization}" >> ${LOG_FILE};
     fi
 }
 
