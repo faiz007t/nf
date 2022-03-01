@@ -69,7 +69,6 @@ function PasteBin_Upload() {
         echo -e "${Font_Red}Failed to generate report ${Font_Suffix}";
     fi
 }
-
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
@@ -77,11 +76,9 @@ function MediaUnlockTest_Viu() {
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local ip=$(PharseJSON "${result}" "ip" 2>&1)
-    local location="$(PharseJSON "${result}" "location" 2>&1) [$(PharseJSON "${result}" "vuclip" 2>&1) $(PharseJSON "${result}" "show_all" 2>&1)]";
+    local location="$(PharseJSON "${result}" "location" 2>&1)";
     if [ $? -eq 0 ];then
-        echo -n -e "\r IP: ${ip}"
-        echo -n -e "\r Viu: ${location}" && echo -n -e "\r Vuclip: ${vuclip}" && echo -n -e "\r Show All: ${show_all}" >> ${LOG_FILE};
+        echo -n -e "\r Viu: ${location}" >> ${LOG_FILE};
     fi
 }
 
