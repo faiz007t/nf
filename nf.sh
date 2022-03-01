@@ -283,7 +283,7 @@ function MediaUnlockTest_ViuTV() {
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
-    local result=`curl -sSL -${1} "https://www.viu.com/ott/" && echo -e "${code}" 2>&1`;
+    local result=`curl -sSL -${1} "https://www.viu.com/ott/sg/${code}/" 2>&1`;
     if [[ "$result" == "curl"* ]];then
         return
     fi
