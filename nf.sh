@@ -326,8 +326,7 @@ function MediaUnlockTest_BBC() {
 # Streaming Unlock Test - Netflix
 function MediaUnlockTest_Netflix() {
     echo -n -e " Netflix:\t\t\t->\c";
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL  "https://www.netflix.com/title/81403959" | grep "preferredLocale":{"country" | cut -d '"' -f4`;
-    
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL  "https://www.netflix.com/title/81403959" | grep "country" | cut -d '"' -f4`;
     if [ ! -n "$result" ]; then
         echo -n -e "\r Netflix:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Netflix:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
     else
