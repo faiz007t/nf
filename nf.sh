@@ -283,13 +283,13 @@ function MediaUnlockTest_ViuTV() {
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t->\c";
-    local result=`curl -sSL -${1} "https://www.viu.com/ott/sg/${code}/" 2>&1`;
+    local result=`curl -sSL -${1} "https://www.disneyplus.com/" 2>&1`;
     if [[ "$result" == "curl"* ]];then
         return
     fi
-    local result=$(PharseJSON "${result}" "location");
+    local result=$(PharseJSON "${result}" "regionCode");
     if [[ "$result" == "SG" ]]; then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}Yes (SG)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tYes (SG)" >> ${LOG_FILE};
+        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}SG${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tSG" >> ${LOG_FILE};
         return
     fi
     
