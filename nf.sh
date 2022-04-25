@@ -17,7 +17,7 @@ LOG_FILE="check.log";
 
 clear;
 echo -e "${Font_Yellow} **Testing IPv4 unlocking** ${Font_Suffix}" && echo -e " **Testing IPv4 unlocking** " > ${LOG_FILE};
-echo -e "${Font_Yellow} -----------------------------------------------\n" > ${LOG_FILE};
+echo -e "${Font_Yellow} -----------------------------------------------\n" && echo -e " -----------------------------------------------\n" >> ${LOG_FILE};
 echo -e " **Your network is:" && echo -e " **Your network is:" >> ${LOG_FILE};
 echo -e "\n==============[ Checking Sites ]===============$" && echo -e "\n==============[ Checking Sites ]===============$\n" >> ${LOG_FILE};
 
@@ -303,4 +303,4 @@ if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
 else
     echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
 fi
-echo -e "${Font_Yellow} \n===============================================\n" && echo -e " \n===============================================\n" >> ${LOG_FILE};
+echo -e "\n===============================================\n" && echo -e " \n===============================================\n" >> ${LOG_FILE};
