@@ -58,28 +58,6 @@ function InstallJQ() {
     fi
 }
 
-function PharseJSON() {
-    # Instructions: PharseJSON "raw JSON text to parse" "key value to parse"
-    # Example: PharseJSON ""Value":"123456"" "Value" [return result: 123456]
-    echo -n $1 | jq -r .$2;
-}
-
-function PasteBin_Upload() {
-    local uploadresult="$(curl -fsL -X POST \
-        --url https://paste.ubuntu.com \
-        --output /dev/null \
-        --write-out "%{url_effective}\n" \
-        --data-urlencode "content@${PASTEBIN_CONTENT:-/dev/stdin}" \
-        --data "poster=${PASTEBIN_POSTER:-MediaUnlock_Test_By_CoiaPrant}" \
-        --data "expiration=${PASTEBIN_EXPIRATION:-}" \
-    --data "syntax=${PASTEBIN_SYNTAX:-text}")"
-    if [ "$?" = "0" ]; then
-        echo -e "${Font_Green}Report generated ${uploadresult} ${Font_Suffix}";
-    else
-        echo -e "${Font_Red}Failed to generate report ${Font_Suffix}";
-    fi
-}
-
 # Gaming Unlock Test - Steam
 function MediaUnlockTest_Steam(){
     echo -n -e " Steam Currency:\t\t\t->\c";
