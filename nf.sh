@@ -320,5 +320,3 @@ else
     echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
 fi
 echo -e "\n===============================================\n";
-echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
-cat ${LOG_FILE} | PasteBin_Upload;  
