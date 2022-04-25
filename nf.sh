@@ -32,7 +32,7 @@ function ISP(){
 echo -e "${Font_Yellow} **Testing IPv4 unlocking**${Font_Suffix}";
 echo -e "${Font_Yellow} -----------------------------------------------\n";
 echo -e "${Font_Yellow} ** Your network is: {ip}${Font_Suffix}\n"
-echo -e "${Font_Yellow} ==============[ Checking Sites ]===============${Font_Suffix}" && echo -e "==============[ Checking Sites ]===============\n" >> ${LOG_FILE};";
+echo -e "${Font_Yellow} ==============[ Checking Sites ]===============${Font_Suffix}" && echo -e "==============[ Checking Sites ]===============\n" >> ${LOG_FILE}";
 export LANG="en_US";
 export LANGUAGE="en_US";
 export LC_ALL="en_US";
