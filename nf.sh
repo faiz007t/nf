@@ -17,7 +17,7 @@ LOG_FILE="check.log";
 
 clear;
 echo -e "${Font_Yellow} **Testing IPv4 unlocking**";
-echo -e "${Font_Yellow} -----------------------------------------------\n";
+echo -e "${Font_Yellow} -----------------------------------------------${Font_Suffix}\n";
 
 function ISP(){
     local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
