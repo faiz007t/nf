@@ -16,6 +16,13 @@ Font_Suffix="\033[0m";
 LOG_FILE="check.log";
 
 clear;
+echo -e "${Font_Yellow} **Testing IPv4 unlocking**";
+echo -e "${Font_Yellow} -----------------------------------------------\n";
+echo -e "${Font_Yellow} ** Your network is:"
+echo -e "${Font_Yellow} "\n==============[ Checking Sites ]===============\n";
+export LANG="en_US";
+export LANGUAGE="en_US";
+export LC_ALL="en_US";
 
 function ISP(){
     local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
@@ -28,14 +35,6 @@ function ISP(){
         echo "\n" >> ${LOG_FILE};
     fi
 }
-
-echo -e "${Font_Yellow} **Testing IPv4 unlocking**${Font_Suffix}";
-echo -e "${Font_Yellow} -----------------------------------------------\n";
-echo -e "${Font_Yellow} ** Your network is: {ip}\n"
-echo -e "${Font_Yellow} "==============[ Checking Sites ]===============\n";
-export LANG="en_US";
-export LANGUAGE="en_US";
-export LC_ALL="en_US";
 
 function InstallJQ() {
     #InstallJQ
