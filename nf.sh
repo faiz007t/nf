@@ -324,4 +324,4 @@ else
 fi
 echo -e "";
 echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
-cat ${LOG_FILE} | PasteBin_Upload;
+cat ${LOG_FILE} | PasteBin_Upload;  
