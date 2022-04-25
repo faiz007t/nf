@@ -19,8 +19,7 @@ clear;
 echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
 echo -e "${Font_Purple}Tips The test results of this tool are for reference only, please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only, please refer to the actual use" >> ${LOG_FILE};
 echo -e "${Font_Yellow}Streaming media sharing platform ${Font_Suffix}" && echo -e "Streaming media sharing platform " >> ${LOG_FILE};
-echo -e " ** current version: v${shell_version}" && echo -e " ** current version: v${shell_version}" >> ${LOG_FILE};
-echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LOG_FILE};
+echo -e "-----------------------------------------------$" && echo -e "-----------------------------------------------$\n" >> ${LOG_FILE};
 
 export LANG="en_US";
 export LANGUAGE="en_US";
