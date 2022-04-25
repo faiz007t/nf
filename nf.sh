@@ -155,11 +155,11 @@ function MediaUnlockTest_YouTube() {
     
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.youtube.com/red" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
-        echo -n -e "\r YouTube:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\t${result}" >> ${LOG_FILE};
+        echo -n -e "\r YouTube:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube:\t\t\t${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r YouTube:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\tNo" >> ${LOG_FILE};
+    echo -n -e "\r YouTube:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube:\t\t\tNo" >> ${LOG_FILE};
     return;
 }
 
