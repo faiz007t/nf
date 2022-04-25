@@ -18,8 +18,8 @@ LOG_FILE="check.log";
 clear;
 echo -e "${Font_Yellow} **Testing IPv4 unlocking** ${Font_Suffix}" && echo -e " **Testing IPv4 unlocking** " > ${LOG_FILE};
 echo -e "${Font_Yellow} -----------------------------------------------\n" > ${LOG_FILE};
-echo -e "${Font_Yellow} Your network is:" > ${LOG_FILE};
-echo -e "${Font_Yellow} \n==============[ Checking Sites ]===============${Font_Suffix}\n" > ${LOG_FILE};
+echo -e "${Font_Yellow} Your network is:" && echo -e "Your network is:" >> ${LOG_FILE};
+echo -e "\n==============[ Checking Sites ]===============$" && echo -e "\n==============[ Checking Sites ]===============$\n" >> ${LOG_FILE};
 
 export LANG="en_US";
 export LANGUAGE="en_US";
