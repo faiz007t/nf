@@ -25,7 +25,7 @@ function ISP(){
     local ip=$(PharseJSON "${result}" "ip" 2>&1)
     local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
-        echo "Your network is: {ip}\n" >> ${LOG_FILE};
+        echo "\n" >> ${LOG_FILE};
     fi
 }
 
