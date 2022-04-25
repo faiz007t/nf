@@ -16,10 +16,10 @@ Font_Suffix="\033[0m";
 LOG_FILE="check.log";
 
 clear;
-echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
-echo -e "${Font_Purple}Tips The test results of this tool are for reference only, please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only, please refer to the actual use" >> ${LOG_FILE};
-echo -e "${Font_Yellow}Streaming media sharing platform ${Font_Suffix}" && echo -e "Streaming media sharing platform " >> ${LOG_FILE};
-echo -e "-----------------------------------------------$" && echo -e "-----------------------------------------------$\n" >> ${LOG_FILE};
+echo -e "${Font_Yellow} **Testing IPv4 unlocking** ${Font_Suffix}" && echo -e " **Testing IPv4 unlocking** " >> ${LOG_FILE};
+echo -e "-----------------------------------------------" && echo -e "-----------------------------------------------$\n" > ${LOG_FILE};
+echo -e "${Font_Yellow} ** Your network is:" && echo -e " ** Your network is:" > ${LOG_FILE};
+echo -e "\n==============[ Checking Sites ]===============\n" && echo -e "\n==============[ Checking Sites ]===============\n" > ${LOG_FILE};
 
 export LANG="en_US";
 export LANGUAGE="en_US";
