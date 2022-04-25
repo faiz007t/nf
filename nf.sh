@@ -144,7 +144,7 @@ function MediaUnlockTest_Netflix() {
 }
 
 # Streaming Unlock Test - Youtube Region
-function MediaUnlockTest_YouTube_ Region() {
+function MediaUnlockTest_YouTube_Region() {
     echo -n -e " YouTube Region:\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
