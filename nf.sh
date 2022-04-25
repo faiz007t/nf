@@ -16,8 +16,12 @@ Font_Suffix="\033[0m";
 LOG_FILE="check.log";
 
 clear;
-echo -e "${Font_Yellow}Checking Unlock Streaming Sites${Font_Suffix}" && echo -e "Checking Unlock Streaming Sites\n" >> ${LOG_FILE};
-
+echo -e "${Font_Yellow} **Testing IPv4 unlocking${Font_Suffix}" && echo -e " **Testing IPv4 unlocking\n" >> ${LOG_FILE};
+echo -e "${Font_Yellow} -----------------------------------------------" && echo -e "-----------------------------------------------\n" >> ${LOG_FILE};
+echo -e "$\n";
+echo -e "${Font_Yellow}  ** Your network is: ${Font_Suffix}" && echo -e "  ** Your network is: ${Font_Suffix}" >> ${LOG_FILE};
+echo -e "$\n";
+echo -e "$==============[ Checking Sites ]===============${Font_Suffix}" && echo -e "==============[ Checking Sites ]===============\n" >> ${LOG_FILE};
 export LANG="en_US";
 export LANGUAGE="en_US";
 export LC_ALL="en_US";
@@ -316,6 +320,6 @@ if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
 else
     echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
 fi
-echo -e "";
+echo -e "===============================================\n";
 echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
 cat ${LOG_FILE} | PasteBin_Upload;  
