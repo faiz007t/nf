@@ -30,9 +30,9 @@ function ISP(){
 }
 
 echo -e "${Font_Yellow} **Testing IPv4 unlocking**${Font_Suffix}";
-echo -e "${Font_Yellow} -----------------------------------------------\n";
-echo -e "${Font_Yellow}  ** Your network is: \n"
-echo -e "==============[ Checking Sites ]===============${Font_Suffix}";
+echo -e "${Font_Yellow} -----------------------------------------------";
+echo -e "${Font_Yellow} ** Your network is: \n"
+echo -e "${Font_Yellow} ==============[ Checking Sites ]===============\n";
 export LANG="en_US";
 export LANGUAGE="en_US";
 export LC_ALL="en_US";
