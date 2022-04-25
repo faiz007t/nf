@@ -145,7 +145,7 @@ function MediaUnlockTest_Netflix() {
 
 # Streaming Unlock Test - Youtube
 function MediaUnlockTest_YouTube() {
-    echo -n -e " YouTube Region:\t\t\t->\c";
+    echo -n -e " YouTube:\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
@@ -288,7 +288,7 @@ function ISP(){
     local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
         echo " ** IP: ${ip}"
-        echo " ** ISP: ${isp}" && echo " ** ISP: ${isp}" >> ${LOG_FILE};
+        echo " ** ISP: ${isp}" >> ${LOG_FILE};
     fi
 }
 
@@ -321,14 +321,6 @@ if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
     MediaUnlockTest 4;
 else
     echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
-fi
-
-echo " ** Testing IPv6 Unlocking" && echo " ** Testing IPv6 Unlocking" >> ${LOG_FILE};
-check6=`ping6 240c::6666 -c 1 2>&1`;
-if [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
-    MediaUnlockTest 6;
-else
-    echo -e "${Font_SkyBlue}The current host does not support IPv6, skip...${Font_Suffix}" && echo "The current host does not support IPv6, skip..." >> ${LOG_FILE};
 fi
 echo -e "";
 echo -e "${Font_Green}The test results have been saved to ${LOG_FILE} ${Font_Suffix}";
