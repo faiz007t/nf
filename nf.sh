@@ -25,13 +25,13 @@ function ISP(){
     local ip=$(PharseJSON "${result}" "ip" 2>&1)
     local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
     if [ $? -eq 0 ];then
-        echo "\n" >> ${LOG_FILE};
+        echo "Your network is: {ip}\n" >> ${LOG_FILE};
     fi
 }
 
 echo -e "${Font_Yellow} **Testing IPv4 unlocking**${Font_Suffix}";
 echo -e "${Font_Yellow} -----------------------------------------------\n";
-echo -e "${Font_Yellow} ** Your network is: \n"
+echo -e "${Font_Yellow} ** Your network is: {ip}${Font_Suffix}\n"
 echo -e "${Font_Yellow} ==============[ Checking Sites ]===============${Font_Suffix}" && echo -e "==============[ Checking Sites ]===============\n" >> ${LOG_FILE};";
 export LANG="en_US";
 export LANGUAGE="en_US";
