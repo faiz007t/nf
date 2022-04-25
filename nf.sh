@@ -17,7 +17,7 @@ LOG_FILE="check.log";
 
 clear;
 echo -e "${Font_Yellow} **Testing IPv4 unlocking** ${Font_Suffix}" && echo -e " **Testing IPv4 unlocking** " > ${LOG_FILE};
-echo -e "${Font_Yellow} ----------------------------------------------\n" && echo -e " ----------------------------------------------\n" > ${LOG_FILE};
+echo -e " ----------------------------------------------\n" && echo -e " ----------------------------------------------\n" > ${LOG_FILE};
 echo -e " **Your network is:" && echo -e " **Your network is:" >> ${LOG_FILE};
 echo -e " \n==============[ Checking Sites ]===============\n" && echo -e " \n==============[ Checking Sites ]===============\n" > ${LOG_FILE};
 
