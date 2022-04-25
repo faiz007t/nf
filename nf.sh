@@ -25,6 +25,12 @@ export LANG="en_US";
 export LANGUAGE="en_US";
 export LC_ALL="en_US";
 
+function PharseJSON() {
+    # Instructions: PharseJSON "raw JSON text to parse" "key value to parse"
+    # Example: PharseJSON ""Value":"123456"" "Value" [return result: 123456]
+    echo -n $1 | jq -r .$2;
+}
+
 function ISP(){
     local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
     if [[ "$result" == "curl"* ]];then
@@ -58,12 +64,6 @@ function InstallJQ() {
         echo -e "${Font_Red}Please install jq manually${Font_Suffix}";
         exit;
     fi
-}
-
-function PharseJSON() {
-    # Instructions: PharseJSON "raw JSON text to parse" "key value to parse"
-    # Example: PharseJSON ""Value":"123456"" "Value" [return result: 123456]
-    echo -n $1 | jq -r .$2;
 }
 
 # Gaming Unlock Test - Steam
