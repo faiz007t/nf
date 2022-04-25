@@ -16,8 +16,6 @@ Font_Suffix="\033[0m";
 LOG_FILE="check.log";
 
 clear;
-echo -e "Streaming Unlock Test" && echo -e "Streaming Unlock Test" > ${LOG_FILE};
-echo -e "${Font_Purple}Tips The test results of this tool are for reference only，Please refer to the actual use${Font_Suffix}" && echo -e "Tips The test results of this tool are for reference only，Please refer to the actual use" >> ${LOG_FILE};
 echo -e "${Font_Yellow}Checking Unlock Streaming Sites${Font_Suffix}" && echo -e "Checking Unlock Streaming Sites" >> ${LOG_FILE};
 echo -e " ** current version: v${shell_version}" && echo -e " ** system time: v${shell_version}" >> ${LOG_FILE};
 echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LOG_FILE};
@@ -25,6 +23,19 @@ echo -e " ** system time: $(date)" && echo -e " ** system time: $(date)" >> ${LO
 export LANG="en_US";
 export LANGUAGE="en_US";
 export LC_ALL="en_US";
+
+function ISP(){
+    local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
+    if [[ "$result" == "curl"* ]];then
+        return
+    fi
+    local ip=$(PharseJSON "${result}" "ip" 2>&1)
+    local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
+    if [ $? -eq 0 ];then
+        echo "IP: ${ip}"
+        echo "ISP: ${isp}" >> ${LOG_FILE};
+    fi
+}
 
 function InstallJQ() {
     #InstallJQ
@@ -279,19 +290,6 @@ function MediaUnlockTest_ViuTV() {
     echo -n -e "\r Viu.TV:\t\t\t\t${Font_Red}Failed (Unexpected Result: $result)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tFailed (Unexpected Result: $result)" >> ${LOG_FILE};
 }
 
-function ISP(){
-    local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
-    if [[ "$result" == "curl"* ]];then
-        return
-    fi
-    local ip=$(PharseJSON "${result}" "ip" 2>&1)
-    local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
-    if [ $? -eq 0 ];then
-        echo " ** IP: ${ip}"
-        echo " ** ISP: ${isp}" >> ${LOG_FILE};
-    fi
-}
-
 # Media Unlock Test Sites
 function MediaUnlockTest() {
     ISP ${1};
@@ -315,7 +313,6 @@ jq -V > /dev/null 2>&1;
 if [ $? -ne 0 ];then
     InstallJQ;
 fi
-echo " ** Testing IPv4 Unlocking" && echo " ** Testing IPv4 Unlocking" >> ${LOG_FILE};
 check4=`ping 1.1.1.1 -c 1 2>&1`;
 if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
     MediaUnlockTest 4;
