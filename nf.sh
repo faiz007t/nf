@@ -18,8 +18,6 @@ LOG_FILE="check.log";
 clear;
 echo -e "${Font_Yellow} **Testing IPv4 unlocking** ${Font_Suffix}" && echo -e " **Testing IPv4 unlocking** " > ${LOG_FILE};
 echo -e " ----------------------------------------------\n" && echo -e " ----------------------------------------------\n" > ${LOG_FILE};
-echo -e " **Your network is:" && echo -e " **Your network is:" >> ${LOG_FILE};
-echo -e " \n==============[ Checking Sites ]===============" && echo -e " \n==============[ Checking Sites ]===============" > ${LOG_FILE};
 
 export LANG="en_US";
 export LANGUAGE="en_US";
@@ -35,13 +33,15 @@ function ISP(){
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://api.ip.sb/geoip" | sed 's/,/\n/g' | grep "ip" | cut -d '"' -f4`;
 	
     if [ -n "$result" ]; then
-        echo -n -e "\r IP: ${result}${Font_Suffix}\n" && echo -e " IP: ${result}" >> ${LOG_FILE};
+        echo -n -e "\r **Your network is: ${result}${Font_Suffix}\n" && echo -e " **Your network is: ${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r IP: No${Font_Suffix}\n" && echo -e " IP: No" >> ${LOG_FILE};
+    echo -n -e "\r **Your network is: No${Font_Suffix}\n" && echo -e " **Your network is: No" >> ${LOG_FILE};
     return;
 }
+
+echo -e " \n==============[ Checking Sites ]===============" && echo -e " \n==============[ Checking Sites ]===============" > ${LOG_FILE};
 
 function InstallJQ() {
     #InstallJQ
