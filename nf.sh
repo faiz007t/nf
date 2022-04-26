@@ -140,21 +140,21 @@ function MediaUnlockTest_Netflix() {
 
 # Streaming Unlock Test - Youtube Region
 function MediaUnlockTest_YouTubeRegion() {
-    echo -n -e " YouTube Region:\t\t\t->\c";
+    echo -n -e " YouTube:\t\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r YouTube Region:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r YouTube:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " YouTube:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.youtube.com/red" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
-        echo -n -e "\r YouTube Region:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\t${result}" >> ${LOG_FILE};
+        echo -n -e "\r YouTube:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube:\t\t\t\t${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r YouTube Region:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube Region:\t\t\tNo" >> ${LOG_FILE};
+    echo -n -e "\r YouTube:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube:\t\t\tNo" >> ${LOG_FILE};
     return;
 }
 
