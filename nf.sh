@@ -235,20 +235,26 @@ function MediaUnlockTest_Dazn() {
     echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t${region}" >> ${LOG_FILE}
 }
 
-# Streaming Unlock Test - HuluJP
-function MediaUnlockTest_HuluJP() {
-    echo -n -e " Hulu Japan:\t\t\t\t->\c";
-    local result=`curl -${1} -sSL -o /dev/null --max-time 30 -w '%{url_effective}\n' "https://id.hulu.jp" 2>&1`;
+# Streaming Unlock Test - Hulu
+function MediaUnlockTest_Hulu() {
+    echo -n -e " Hulu:\t\t\t\t->\c";
+    local result=`curl -${1} -sSL -o /dev/null --max-time 30 -w '%{url_effective}\n' "https://hulu.com/" 2>&1`;
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Hulu Japan:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu Japan:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r Hulu:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
-    if [[ "$result" == *"login"* ]];then
-        echo -n -e "\r Hulu Japan:\t\t\t\t${Font_Green}Yes${Font_Suffix}\n" && echo -e " Hulu Japan:\t\t\t\tYes" >> ${LOG_FILE};
+    local region=`en-US [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
+    if [ ! -n "${result}" ]; then
+        echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
         return;
     fi
-    echo -n -e "\r Hulu Japan:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Hulu Japan:\t\t\t\tNo" >> ${LOG_FILE};
+
+    if [[ "${region}" == "NULL" ]];then
+        echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tNo" >> ${LOG_FILE}
+        return;
+    fi
+    echo -n -e "\r Hulu:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\t${region}" >> ${LOG_FILE}
 }
 
 # Streaming Unlock Test - ViuTV
