@@ -238,14 +238,15 @@ function MediaUnlockTest_Dazn() {
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t\t->\c";
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.viu.com/" 2>&1`;
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.viu.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
         echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" 2>&1 | grep countryCode | cut -d '"' -f4`;
+	local region=$(echo $result | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
+	
     if [ -n "$result" ]; then
         echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\t${result}" >> ${LOG_FILE};
         return;
