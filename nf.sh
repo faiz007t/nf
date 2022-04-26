@@ -237,45 +237,22 @@ function MediaUnlockTest_Dazn() {
 
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
-    echo -n -e " Viu:\t\t\t\t->\c";
+    echo -n -e " Viu:\t\t\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.viu.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Viu:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Viu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
-        echo -n -e "\r Viu:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t${result}" >> ${LOG_FILE};
+        echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\t${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r Viu:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu:\t\t\tNo" >> ${LOG_FILE};
+    echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\tNo" >> ${LOG_FILE};
     return;
-}
-
-# Streaming Unlock Test - ViuTV
-function MediaUnlockTest_ViuTV() {
-    echo -n -e " Viu TV:\t\t\t\t->\c";
-    local result=`curl -${1} -sSLk --max-time 30 -X POST -H "Content-Type: application/json" -d '{"callerReferenceNo":"20210603233037","productId":"202009041154906","contentId":"202009041154906","contentType":"Vod","mode":"prod","PIN":"password","cookie":"3c2c4eafe3b0d644b8","deviceId":"U5f1bf2bd8ff2ee000","deviceType":"ANDROID_WEB","format":"HLS"}' "https://api.viu.now.com/p8/3/getVodURL" 2>&1`;
-    if [[ "${result}" == "curl"* ]];then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
-        return;
-    fi
-    
-    local result=$(PharseJSON "${result}" "responseCode");
-    if [[ "$result" == "SUCCESS" ]]; then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Green}Yes${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tYes" >> ${LOG_FILE};
-        return
-    fi
-    
-    if [[ "$result" == "GEO_CHECK_FAIL" ]]; then
-        echo -n -e "\r Viu TV:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tNo" >> ${LOG_FILE};
-        return;
-    fi
-    
-    echo -n -e "\r Viu.TV:\t\t\t\t${Font_Red}Failed (Unexpected Result: $result)${Font_Suffix}\n" && echo -e " Viu TV:\t\t\t\tFailed (Unexpected Result: $result)" >> ${LOG_FILE};
 }
 
 # Media Unlock Test Sites
@@ -287,7 +264,6 @@ function MediaUnlockTest() {
     MediaUnlockTest_Viu ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
-    MediaUnlockTest_ViuTV ${1};
     MediaUnlockTest_YouTubeRegion ${1};
 }
 
