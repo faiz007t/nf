@@ -134,7 +134,7 @@ function MediaUnlockTest_Netflix() {
     if [[ ! -n "$region" ]];then
         region="US";
     fi
-    echo -n -e "\r Netflix:\t\t\t\t${Font_Green}${region})${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\t${region}" >> ${LOG_FILE};
+    echo -n -e "\r Netflix:\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\t${region}" >> ${LOG_FILE};
     return;
 }
 
