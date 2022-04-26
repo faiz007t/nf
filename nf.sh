@@ -245,7 +245,7 @@ function MediaUnlockTest_Viu() {
         return;
     fi
     
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" | grep "countryCode" | cut -d '"' -f4`;
     if [ -n "$result" ]; then
         echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\t${result}" >> ${LOG_FILE};
         return;
@@ -264,7 +264,7 @@ function MediaUnlockTest() {
     MediaUnlockTest_Viu ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
-    MediaUnlockTest_YouTubeRegion ${1};
+    MediaUnlockTest_YouTube ${1};
 }
 
 curl -V > /dev/null 2>&1;
