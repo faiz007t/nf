@@ -31,14 +31,17 @@ function PharseJSON() {
 
 function ISP(){
     local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://api.ip.sb/geoip" | sed 's/,/\n/g' | grep "ip" | cut -d '"' -f4`;
+    local result2=`curl --user-agent "${UA_Browser}" -${1} -sL "https://api.ip.sb/geoip" | sed 's/,/\n/g' | grep "isp" | cut -d '"' -f4`;
 	
     if [ -n "$result" ]; then
-        echo -n -e "\r **Your network is: ${result}${Font_Suffix}\n" && echo -e " **Your network is: ${result}" >> ${LOG_FILE};
+        echo -n -e "\r **Your ip is: ${result}${Font_Suffix}\n" && echo -e " **Your ip is: ${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r **Your network is: No${Font_Suffix}\n" && echo -e " **Your network is: No" >> ${LOG_FILE};
-    return;
+    if [ -n "$result2" ]; then
+        echo -n -e "\r **Your network is: ${result2}${Font_Suffix}\n" && echo -e " **Your network is: ${result2}" >> ${LOG_FILE};
+        return;
+    fi
 }
 
 echo -e " \n==============[ Checking Sites ]===============" && echo -e " \n==============[ Checking Sites ]===============" > ${LOG_FILE};
