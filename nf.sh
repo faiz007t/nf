@@ -134,7 +134,7 @@ function MediaUnlockTest_Netflix() {
     if [[ ! -n "$region" ]];then
         region="US";
     fi
-    echo -n -e "\r Netflix:\t\t\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tYes(Region: ${region})" >> ${LOG_FILE};
+    echo -n -e "\r Netflix:\t\t\t\t${Font_Green} ${region})${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\t ${region})" >> ${LOG_FILE};
     return;
 }
 
@@ -232,7 +232,7 @@ function MediaUnlockTest_Dazn() {
         echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tNo" >> ${LOG_FILE}
         return;
     fi
-    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tYes(Region: ${region})" >> ${LOG_FILE}
+    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green} ${region})${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t ${region})" >> ${LOG_FILE}
 }
 
 # Streaming Unlock Test - HuluJP
