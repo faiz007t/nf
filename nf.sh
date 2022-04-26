@@ -245,6 +245,247 @@ function MediaUnlockTest_Viu() {
         return;
     fi
     
+	local region=$(echo $result | python -m json.tool 2>/dev/null | grep 'ccode' | cut -f4 -d'"')
+	
+    if [ -n "$result" ]; then
+        echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\t${result}" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\tNo" >> ${LOG_FILE};
+    return;
+}
+
+# Media Unlock Test Sites
+function MediaUnlockTest() {
+    ISP ${1};
+    MediaUnlockTest_Dazn ${1};
+    MediaUnlockTest_DisneyPlus ${1};
+    MediaUnlockTest_HBONow ${1};
+    MediaUnlockTest_Viu ${1};
+    MediaUnlockTest_Netflix ${1};
+    MediaUnlockTest_Steam ${1};
+    MediaUnlockTest_YouTube ${1};
+}
+
+curl -V > /dev/null 2>&1;
+if [ $? -ne 0 ];then
+    echo -e "${Font_Red}Please install curl${Font_Suffix}";
+    exit;
+fi
+
+jq -V > /dev/null 2>&1;
+if [ $? -ne 0 ];then
+    InstallJQ;
+fi
+check4=`ping 1.1.1.1 -c 1 2>&1`;
+if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+    MediaUnlockTest 4;
+else
+    echo -e "${Font_SkyBlue}The current host does not support IPv4, skip...${Font_Suffix}" && echo "The current host does not support IPv4, skip..." >> ${LOG_FILE};
+fi
+echo -e " \n===============================================\n" && echo -e " \n===============================================\n" >> ${LOG_FILE};
+
+    if [ -e "/etc/redhat-release" ];then
+        echo -e "${Font_Green}installing dependencies: epel-release${Font_Suffix}";
+        yum install epel-release -y -q > /dev/null;
+        echo -e "${Font_Green}installing dependencies: jq${Font_Suffix}";
+        yum install jq -y -q > /dev/null;
+        elif [[ $(cat /etc/os-release | grep '^ID=') =~ ubuntu ]] || [[ $(cat /etc/os-release | grep '^ID=') =~ debian ]];then
+        echo -e "${Font_Green}Updating package list...${Font_Suffix}";
+        apt-get update -y > /dev/null;
+        echo -e "${Font_Green}installing dependencies: jq${Font_Suffix}";
+        apt-get install jq -y > /dev/null;
+        elif [[ $(cat /etc/issue | grep '^ID=') =~ alpine ]];then
+        apk update > /dev/null;
+        echo -e "${Font_Green}installing dependencies: jq${Font_Suffix}";
+        apk add jq > /dev/null;
+    else
+        echo -e "${Font_Red}Please install jq manually${Font_Suffix}";
+        exit;
+    fi
+}
+
+# Gaming Unlock Test - Steam
+function MediaUnlockTest_Steam(){
+    echo -n -e " Steam Currency:\t\t\t->\c";
+    local result=`curl --user-agent "${UA_Browser}" -${1} -fsSL --max-time 30 https://store.steampowered.com/app/761830 2>&1 | grep priceCurrency | cut -d '"' -f4`;
+    
+    if [ ! -n "$result" ]; then
+        echo -n -e "\r Steam Currency:\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Steam Currency:\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+    else
+        echo -n -e "\r Steam Currency:\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Steam Currency:\t\t\t${result}" >> ${LOG_FILE};
+    fi
+}
+
+# Streaming Unlock Test - HBONow
+function MediaUnlockTest_HBONow() {
+    echo -n -e " HBO Now:\t\t\t\t->\c";
+    # try to get a successful result
+    local result=`curl --user-agent "${UA_Browser}" -${1} -fsSL --max-time 30 --write-out "%{url_effective}\n" --output /dev/null https://play.hbonow.com/ 2>&1`;
+    if [[ "$result" != "curl"* ]]; then
+        # The download page is successful, start parsing and jumping
+        if [ "${result}" = "https://play.hbonow.com" ] || [ "${result}" = "https://play.hbonow.com/" ]; then
+            echo -n -e "\r HBO Now:\t\t\t\t${Font_Green}Yes${Font_Suffix}\n" && echo " HBO Now:\t\t\t\tYes" >> ${LOG_FILE};
+            elif [ "${result}" = "http://hbogeo.cust.footprint.net/hbonow/geo.html" ] || [ "${result}" = "http://geocust.hbonow.com/hbonow/geo.html" ]; then
+            echo -n -e "\r HBO Now:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tNo" >> ${LOG_FILE};
+        else
+            echo -n -e "\r HBO Now:\t\t\t\t${Font_Yellow}Failed (Parse Json)${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tFailed (Parse Json)" >> ${LOG_FILE};
+        fi
+    else
+        # Download page failed, return error code
+        echo -n -e "\r HBO Now:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+    fi
+}
+
+# Streaming Unlock Test - Netflix
+function MediaUnlockTest_Netflix() {
+    echo -n -e " Netflix:\t\t\t\t->\c";
+    local result=`curl -${1} --user-agent "${UA_Browser}" -sSL "https://www.netflix.com/" 2>&1`;
+    if [ "$result" == "Not Available" ];then
+        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tUnsupport" >> ${LOG_FILE};
+        return;
+    fi
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+    
+    local result=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80018499" 2>&1`;
+    if [[ "$result" == *"page-404"* ]] || [[ "$result" == *"NSEZ-403"* ]];then
+        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tNo" >> ${LOG_FILE};
+        return;
+    fi
+    
+    local result1=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70143836" 2>&1`;
+    local result2=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80027042" 2>&1`;
+    local result3=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70140425" 2>&1`;
+    local result4=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70283261" 2>&1`;
+    local result5=`curl -${1} --user-agent "${UA_Browser}"-sL "https://www.netflix.com/title/70143860" 2>&1`;
+    local result6=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70202589" 2>&1`;
+    
+    if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
+        echo -n -e "\r Netflix:\t\t\t\t${Font_Yellow}Only Homemade${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tOnly Homemade" >> ${LOG_FILE};
+        return;
+    fi
+    
+    local region=`tr [:lower:] [:upper:] <<< $(curl -${1} --user-agent "${UA_Browser}" -fs --write-out %{redirect_url} --output /dev/null "https://www.netflix.com/title/80018499" | cut -d '/' -f4 | cut -d '-' -f1)` ;
+    
+    if [[ ! -n "$region" ]];then
+        region="US";
+    fi
+    echo -n -e "\r Netflix:\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\t${region}" >> ${LOG_FILE};
+    return;
+}
+
+# Streaming Unlock Test - Youtube
+function MediaUnlockTest_YouTube() {
+    echo -n -e " YouTube:\t\t\t\t->\c";
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r YouTube:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " YouTube:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+    
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.youtube.com/red" | sed 's/,/\n/g' | grep "countryCode" | cut -d '"' -f4`;
+    if [ -n "$result" ]; then
+        echo -n -e "\r YouTube:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " YouTube:\t\t\t\t${result}" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r YouTube:\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " YouTube:\t\t\tNo" >> ${LOG_FILE};
+    return;
+}
+
+# Streaming Unlock Test - DisneyPlus
+function MediaUnlockTest_DisneyPlus() {
+    echo -n -e " Disney+:\t\t\t\t->\c"
+	local PreAssertion=$(curl $useNIC $xForward -${1} --user-agent "${UA_Browser}" -s --max-time 10 -X POST "https://global.edge.bamgrid.com/devices" -H "authorization: Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84" -H "content-type: application/json; charset=UTF-8" -d '{"deviceFamily":"browser","applicationRuntime":"chrome","deviceProfile":"windows","attributes":{}}' 2>&1)
+	if [[ "$PreAssertion" == "curl"* ]] && [[ "$1" == "6" ]]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}IPv6 Not Support${Font_Suffix}\n"
+		return
+	elif [[ "$PreAssertion" == "curl"* ]]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
+		return
+	fi
+
+	local assertion=$(echo $PreAssertion | python -m json.tool 2>/dev/null | grep assertion | cut -f4 -d'"')
+	local PreDisneyCookie=$(curl -s --max-time 10 "https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/cookies" | sed -n '1p')
+	local disneycookie=$(echo $PreDisneyCookie | sed "s/DISNEYASSERTION/${assertion}/g")
+	local TokenContent=$(curl $useNIC $xForward -${1} --user-agent "${UA_Browser}" -s --max-time 10 -X POST "https://global.edge.bamgrid.com/token" -H "authorization: Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84" -d "$disneycookie")
+	local isBanned=$(echo $TokenContent | python -m json.tool 2>/dev/null | grep 'forbidden-location')
+	local is403=$(echo $TokenContent | grep '403 ERROR')
+
+	if [ -n "$isBanned" ] || [ -n "$is403" ]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		return
+	fi
+
+	local fakecontent=$(curl -s --max-time 10 "https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/cookies" | sed -n '8p')
+	local refreshToken=$(echo $TokenContent | python -m json.tool 2>/dev/null | grep 'refresh_token' | awk '{print $2}' | cut -f2 -d'"')
+	local disneycontent=$(echo $fakecontent | sed "s/ILOVEDISNEY/${refreshToken}/g")
+	local tmpresult=$(curl $useNIC $xForward -${1} --user-agent "${UA_Browser}" -X POST -sSL --max-time 10 "https://disney.api.edge.bamgrid.com/graph/v1/device/graphql" -H "authorization: ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84" -d "$disneycontent" 2>&1)
+	local previewcheck=$(curl $useNIC $xForward -${1} -s -o /dev/null -L --max-time 10 -w '%{url_effective}\n' "https://disneyplus.com" | grep preview)
+	local isUnabailable=$(echo $previewcheck | grep 'unavailable')
+	local region=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
+	local inSupportedLocation=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'inSupportedLocation' | awk '{print $2}' | cut -f1 -d',')
+
+	if [[ "$region" == "JP" ]]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}JP${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "false" ]] && [ -z "$isUnabailable" ]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Yellow}Available For Disney+ $region Soon${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [ -n "$isUnavailable" ]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "true" ]]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}$region${Font_Suffix}\n"
+		return
+	elif [ -z "$region" ]; then
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		return
+	else
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}Failed${Font_Suffix}\n"
+		return
+	fi
+
+}
+
+# Streaming Unlock Test - Dazn
+function MediaUnlockTest_Dazn() {
+    echo -n -e " Dazn:\t\t\t\t\t->\c";
+    local result=`curl -${1} -sSL --max-time 30 -X POST -H "Content-Type: application/json" -d '{"LandingPageKey":"generic","Languages":"zh-CN,zh,en","Platform":"web","PlatformAttributes":{},"Manufacturer":"","PromoCode":"","Version":"2"}' "https://startup.core.indazn.com/misl/v5/Startup" 2>&1`;
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+
+    local region=`tr [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
+    if [ ! -n "${result}" ]; then
+        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
+        return;
+    fi
+
+    if [[ "${region}" == "NULL" ]];then
+        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tNo" >> ${LOG_FILE}
+        return;
+    fi
+    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t${region}" >> ${LOG_FILE}
+}
+
+# Streaming Unlock Test - Viu
+function MediaUnlockTest_Viu() {
+    echo -n -e " Viu:\t\t\t\t\t->\c";
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.viu.com/" 2>&1`;
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+    
 	local region=$(echo $result | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
 	
     if [ -n "$result" ]; then
