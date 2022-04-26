@@ -244,7 +244,9 @@ function MediaUnlockTest_Viu() {
         return;
     fi
     
-    local region=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
+    local isUnabailable=$(echo $previewcheck | grep 'unavailable')
+	local region=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
+	local inSupportedLocation=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'inSupportedLocation' | awk '{print $2}' | cut -f1 -d',')
 
 	if [[ "$region" == "MY" ]]; then
 		echo -n -e "\r Viu:\t\t\t\t${Font_Green}MY${Font_Suffix}\n"
