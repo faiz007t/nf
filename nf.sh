@@ -76,24 +76,25 @@ function MediaUnlockTest_Steam(){
     fi
 }
 
-# Streaming Unlock Test - HBONow
-function MediaUnlockTest_HBONow() {
-    echo -n -e " HBO Now:\t\t\t\t->\c";
-    # try to get a successful result
-    local result=`curl --user-agent "${UA_Browser}" -${1} -fsSL --max-time 30 --write-out "%{url_effective}\n" --output /dev/null https://play.hbonow.com/ 2>&1`;
-    if [[ "$result" != "curl"* ]]; then
-        # The download page is successful, start parsing and jumping
-        if [ "${result}" = "https://play.hbonow.com" ] || [ "${result}" = "https://play.hbonow.com/" ]; then
-            echo -n -e "\r HBO Now:\t\t\t\t${Font_Green}Yes${Font_Suffix}\n" && echo " HBO Now:\t\t\t\tYes" >> ${LOG_FILE};
-            elif [ "${result}" = "http://hbogeo.cust.footprint.net/hbonow/geo.html" ] || [ "${result}" = "http://geocust.hbonow.com/hbonow/geo.html" ]; then
-            echo -n -e "\r HBO Now:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tNo" >> ${LOG_FILE};
-        else
-            echo -n -e "\r HBO Now:\t\t\t\t${Font_Yellow}Failed (Parse Json)${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tFailed (Parse Json)" >> ${LOG_FILE};
-        fi
-    else
-        # Download page failed, return error code
-        echo -n -e "\r HBO Now:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " HBO Now:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+# Streaming Unlock Test - PrimeVideo
+function MediaUnlockTest_PrimeVideo() {
+    echo -n -e " PrimeVideo:\t\t\t\t\t->\c";
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.primevideo.com/" 2>&1`;
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
     fi
+    
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.primevideo.com/" | sed 's/,/\n/g' | grep "currentTerritory" | cut -d '"' -f4`;
+	
+    if [ -n "$result" ]; then
+        echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\t${result}" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\tNo" >> ${LOG_FILE};
+    return;
 }
 
 # Streaming Unlock Test - Netflix
@@ -260,7 +261,7 @@ function MediaUnlockTest() {
     ISP ${1};
     MediaUnlockTest_Dazn ${1};
     MediaUnlockTest_DisneyPlus ${1};
-    MediaUnlockTest_HBONow ${1};
+    MediaUnlockTest_PrimeVideo ${1};
     MediaUnlockTest_Viu ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
