@@ -245,7 +245,7 @@ function MediaUnlockTest_Viu() {
         return;
     fi
     
-    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" | grep "countryCode" | cut -d '"' -f4`;
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.viu.com/" 2>&1 | grep countryCode | cut -d '"' -f4`;
     if [ -n "$result" ]; then
         echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Viu:\t\t\t\t\t${result}" >> ${LOG_FILE};
         return;
