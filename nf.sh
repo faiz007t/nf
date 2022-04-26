@@ -192,7 +192,7 @@ function MediaUnlockTest_DisneyPlus() {
 	local inSupportedLocation=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'inSupportedLocation' | awk '{print $2}' | cut -f1 -d',')
 
 	if [[ "$region" == "JP" ]]; then
-		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}Yes (Region: JP)${Font_Suffix}\n"
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}JP${Font_Suffix}\n"
 		return
 	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "false" ]] && [ -z "$isUnabailable" ]; then
 		echo -n -e "\r Disney+:\t\t\t\t${Font_Yellow}Available For [Disney+ $region] Soon${Font_Suffix}\n"
@@ -201,7 +201,7 @@ function MediaUnlockTest_DisneyPlus() {
 		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
 		return
 	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "true" ]]; then
-		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}Yes (Region: $region)${Font_Suffix}\n"
+		echo -n -e "\r Disney+:\t\t\t\t${Font_Green}${Font_Suffix}\n"
 		return
 	elif [ -z "$region" ]; then
 		echo -n -e "\r Disney+:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
@@ -232,7 +232,7 @@ function MediaUnlockTest_Dazn() {
         echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tNo" >> ${LOG_FILE}
         return;
     fi
-    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green} ${region})${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t ${region})" >> ${LOG_FILE}
+    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}${region})${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t${region})" >> ${LOG_FILE}
 }
 
 # Streaming Unlock Test - HuluJP
