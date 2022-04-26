@@ -138,8 +138,8 @@ function MediaUnlockTest_Netflix() {
     return;
 }
 
-# Streaming Unlock Test - Youtube
-function MediaUnlockTest_YouTube() {
+# Streaming Unlock Test - Youtube Region
+function MediaUnlockTest_YouTubeRegion() {
     echo -n -e " YouTube:\t\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
@@ -235,26 +235,37 @@ function MediaUnlockTest_Dazn() {
     echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t${region}" >> ${LOG_FILE}
 }
 
-# Streaming Unlock Test - Hulu
-function MediaUnlockTest_Hulu() {
-    echo -n -e " Hulu:\t\t\t\t->\c";
-    local result=`curl -${1} -sSL -o /dev/null --max-time 30 -w '%{url_effective}\n' "https://hulu.com/" 2>&1`;
+# Streaming Unlock Test - Viu
+function MediaUnlockTest_Viu() {
+    echo -n -e " Viu:\t\t\t\t->\c";
+    local result=`curl -${1} -sSL -o /dev/null --max-time 30 -w '%{url_effective}\n' "https://www.viu.com/ott/my/ms/all" 2>&1`;
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Hulu:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r Viu:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
-    local region=`tr [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
-    if [ ! -n "${result}" ]; then
-        echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
-        return;
-    fi
+    local region=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'countryCode' | cut -f4 -d'"')
 
-    if [[ "${region}" == "NULL" ]];then
-        echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tNo" >> ${LOG_FILE}
-        return;
-    fi
-    echo -n -e "\r Hulu:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\t${region}" >> ${LOG_FILE}
+	if [[ "$region" == "MY" ]]; then
+		echo -n -e "\r Viu:\t\t\t\t${Font_Green}MY${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "false" ]] && [ -z "$isUnabailable" ]; then
+		echo -n -e "\r Viu:\t\t\t\t${Font_Yellow}Available For Viu $region Soon${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [ -n "$isUnavailable" ]; then
+		echo -n -e "\r Viu:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		return
+	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "true" ]]; then
+		echo -n -e "\r Viu:\t\t\t\t${Font_Green}$region${Font_Suffix}\n"
+		return
+	elif [ -z "$region" ]; then
+		echo -n -e "\r Viu:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		return
+	else
+		echo -n -e "\r Viu:\t\t\t\t${Font_Red}Failed${Font_Suffix}\n"
+		return
+	fi
+
 }
 
 # Streaming Unlock Test - ViuTV
@@ -286,11 +297,11 @@ function MediaUnlockTest() {
     MediaUnlockTest_Dazn ${1};
     MediaUnlockTest_DisneyPlus ${1};
     MediaUnlockTest_HBONow ${1};
-    MediaUnlockTest_Hulu ${1};
+    MediaUnlockTest_Viu ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
     MediaUnlockTest_ViuTV ${1};
-    MediaUnlockTest_YouTube ${1};
+    MediaUnlockTest_YouTubeRegion ${1};
 }
 
 curl -V > /dev/null 2>&1;
