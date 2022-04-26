@@ -32,15 +32,15 @@ function PharseJSON() {
 }
 
 function ISP(){
-    local result=`curl -sSL -${1} "https://api.ip.sb/geoip" 2>&1`;
-    if [[ "$result" == "curl"* ]];then
-        return
+    local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://api.ip.sb/geoip" | sed 's/,/\n/g' | grep "ip" | cut -d '"' -f4`;
+	
+    if [ -n "$result" ]; then
+        echo -n -e "\r IP: ${result}${Font_Suffix}\n" && echo -e " IP: ${result}" >> ${LOG_FILE};
+        return;
     fi
-    local ip=$(PharseJSON "${result}" "ip" 2>&1)
-    local isp="$(PharseJSON "${result}" "isp" 2>&1) [$(PharseJSON "${result}" "country" 2>&1) $(PharseJSON "${result}" "city" 2>&1)]";
-    if [ $? -eq 0 ];then
-        echo ""
-    fi
+    
+    echo -n -e "\r IP: No${Font_Suffix}\n" && echo -e " IP: No" >> ${LOG_FILE};
+    return;
 }
 
 function InstallJQ() {
