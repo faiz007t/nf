@@ -244,7 +244,7 @@ function MediaUnlockTest_Hulu() {
         return;
     fi
     
-    local region=`en-US [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
+    local region=`us [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
     if [ ! -n "${result}" ]; then
         echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
         return;
