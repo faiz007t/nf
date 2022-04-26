@@ -237,10 +237,10 @@ function MediaUnlockTest_Dazn() {
 
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
-    echo -n -e " Viu:\t\t\t\t->\c";
+    echo -n -e " Viu:\t\t\t\t\t->\c";
     local result=`curl -${1} -sSL -o /dev/null --max-time 30 -w '%{url_effective}\n' "https://www.viu.com/ott/my/ms/all" 2>&1`;
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Viu:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
@@ -249,22 +249,22 @@ function MediaUnlockTest_Viu() {
 	local inSupportedLocation=$(echo $tmpresult | python -m json.tool 2>/dev/null | grep 'inSupportedLocation' | awk '{print $2}' | cut -f1 -d',')
 
 	if [[ "$region" == "MY" ]]; then
-		echo -n -e "\r Viu:\t\t\t\t${Font_Green}MY${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}MY${Font_Suffix}\n"
 		return
 	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "false" ]] && [ -z "$isUnabailable" ]; then
-		echo -n -e "\r Viu:\t\t\t\t${Font_Yellow}Available For Viu $region Soon${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Yellow}Available For Viu $region Soon${Font_Suffix}\n"
 		return
 	elif [ -n "$region" ] && [ -n "$isUnavailable" ]; then
-		echo -n -e "\r Viu:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n"
 		return
 	elif [ -n "$region" ] && [[ "$inSupportedLocation" == "true" ]]; then
-		echo -n -e "\r Viu:\t\t\t\t${Font_Green}$region${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Green}$region${Font_Suffix}\n"
 		return
 	elif [ -z "$region" ]; then
-		echo -n -e "\r Viu:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n"
 		return
 	else
-		echo -n -e "\r Viu:\t\t\t\t${Font_Red}Failed${Font_Suffix}\n"
+		echo -n -e "\r Viu:\t\t\t\t\t${Font_Red}Failed${Font_Suffix}\n"
 		return
 	fi
 
