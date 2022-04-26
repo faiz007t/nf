@@ -138,8 +138,8 @@ function MediaUnlockTest_Netflix() {
     return;
 }
 
-# Streaming Unlock Test - Youtube
-function MediaUnlockTest_YouTube() {
+# Streaming Unlock Test - Youtube Region
+function MediaUnlockTest_YouTubeRegion() {
     echo -n -e " YouTube:\t\t\t\t->\c";
     local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.youtube.com/" 2>&1`;
     
@@ -244,7 +244,7 @@ function MediaUnlockTest_Hulu() {
         return;
     fi
     
-    local region=`us [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
+    local region=`tr [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
     if [ ! -n "${result}" ]; then
         echo -n -e "\r Hulu:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Hulu:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
         return;
@@ -286,11 +286,11 @@ function MediaUnlockTest() {
     MediaUnlockTest_Dazn ${1};
     MediaUnlockTest_DisneyPlus ${1};
     MediaUnlockTest_HBONow ${1};
-    MediaUnlockTest_Hulu ${1};
+    MediaUnlockTest_HuluJP ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
     MediaUnlockTest_ViuTV ${1};
-    MediaUnlockTest_YouTube ${1};
+    MediaUnlockTest_YouTubeRegion ${1};
 }
 
 curl -V > /dev/null 2>&1;
