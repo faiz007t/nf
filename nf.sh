@@ -86,7 +86,7 @@ function MediaUnlockTest_PrimeVideo() {
         return;
     fi
     
-	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.primevideo.com/" | sed 's/,/\n/g' | grep "locale" | cut -d '"' -f4`;
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.primevideo.com/" | sed 's/,/\n/g' | grep "country" | cut -d '"' -f4`;
 	
     if [ -n "$result" ]; then
         echo -n -e "\r PrimeVideo:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t${result}" >> ${LOG_FILE};
