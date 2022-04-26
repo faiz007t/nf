@@ -286,7 +286,7 @@ function MediaUnlockTest() {
     MediaUnlockTest_Dazn ${1};
     MediaUnlockTest_DisneyPlus ${1};
     MediaUnlockTest_HBONow ${1};
-    MediaUnlockTest_HuluJP ${1};
+    MediaUnlockTest_Hulu ${1};
     MediaUnlockTest_Netflix ${1};
     MediaUnlockTest_Steam ${1};
     MediaUnlockTest_ViuTV ${1};
