@@ -78,22 +78,22 @@ function MediaUnlockTest_Steam(){
 
 # Streaming Unlock Test - PrimeVideo
 function MediaUnlockTest_PrimeVideo() {
-    echo -n -e " PrimeVideo:\t\t\t\t\t->\c";
+    echo -n -e " PrimeVideo:\t\t\t\t->\c";
 	local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.primevideo.com/" 2>&1`;
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        echo -n -e "\r PrimeVideo:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
         return;
     fi
     
-	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.primevideo.com/" | sed 's/,/\n/g' | grep "currentTerritory" | cut -d '"' -f4`;
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.primevideo.com/" | sed 's/,/\n/g' | grep "locale" | cut -d '"' -f4`;
 	
     if [ -n "$result" ]; then
-        echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\t${result}" >> ${LOG_FILE};
+        echo -n -e "\r PrimeVideo:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t${result}" >> ${LOG_FILE};
         return;
     fi
     
-    echo -n -e "\r PrimeVideo:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\t\tNo" >> ${LOG_FILE};
+    echo -n -e "\r PrimeVideo:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " PrimeVideo:\t\t\t\tNo" >> ${LOG_FILE};
     return;
 }
 
@@ -125,7 +125,7 @@ function MediaUnlockTest_Netflix() {
     local result6=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70202589" 2>&1`;
     
     if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
-        echo -n -e "\r Netflix:\t\t\t\t${Font_Yellow}Only Homemade${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tOnly Homemade" >> ${LOG_FILE};
+        echo -n -e "\r Netflix:\t\t\t\t${Font_Yellow}Originals Only${Font_Suffix}\n" && echo -e " Netflix:\t\t\t\tOriginals Only" >> ${LOG_FILE};
         return;
     fi
     
