@@ -34,7 +34,7 @@ function ISP(){
     local result2=`curl --user-agent "${UA_Browser}" -${1} -sL "https://api.ip.sb/geoip" | sed 's/,/\n/g' | grep "isp" | cut -d '"' -f4`;
 	
     if [ -n "$result" ]; then
-        echo -n -e " **Your ip is: ${result}\n **Your network is: ${result2} \n==============[ Checking Sites ]===============" && echo -e " **Your ip is: ${result}\n **Your network is: ${result2} \n==============[ Checking Sites ]===============" >> ${LOG_FILE};
+        echo -n -e " **Your ip is: ${result}\n **Your network is: ${result2} \n==============[ Checking Sites ]===============\n" && echo -e " **Your ip is: ${result}\n **Your network is: ${result2} \n==============[ Checking Sites ]===============\n" >> ${LOG_FILE};
         return;
     fi
 }
