@@ -213,28 +213,6 @@ function MediaUnlockTest_DisneyPlus() {
 
 }
 
-# Streaming Unlock Test - Dazn
-function MediaUnlockTest_Dazn() {
-    echo -n -e " Dazn:\t\t\t\t\t->\c";
-    local result=`curl -${1} -sSL --max-time 30 -X POST -H "Content-Type: application/json" -d '{"LandingPageKey":"generic","Languages":"zh-CN,zh,en","Platform":"web","PlatformAttributes":{},"Manufacturer":"","PromoCode":"","Version":"2"}' "https://startup.core.indazn.com/misl/v5/Startup" 2>&1`;
-    if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
-        return;
-    fi
-
-    local region=`tr [:lower:] [:upper:] <<<$(PharseJSON "${result}" "Region.GeolocatedCountry")`;
-    if [ ! -n "${result}" ]; then
-        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tUnsupport" >> ${LOG_FILE};
-        return;
-    fi
-
-    if [[ "${region}" == "NULL" ]];then
-        echo -n -e "\r Dazn:\t\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\tNo" >> ${LOG_FILE}
-        return;
-    fi
-    echo -n -e "\r Dazn:\t\t\t\t\t${Font_Green}${region}${Font_Suffix}\n" && echo -e " Dazn:\t\t\t\t\t${region}" >> ${LOG_FILE}
-}
-
 # Streaming Unlock Test - Viu
 function MediaUnlockTest_Viu() {
     echo -n -e " Viu:\t\t\t\t\t->\c";
@@ -256,14 +234,57 @@ function MediaUnlockTest_Viu() {
     return;
 }
 
+# Streaming Unlock Test - iQiyi
+function MediaUnlockTest_iQiyi() {
+    echo -n -e " iQiyi:\t\t\t\t->\c";
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sSL "https://www.iq.com/" 2>&1`;
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r iQiyi:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " iQiyi:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+    
+	local result=`curl --user-agent "${UA_Browser}" -${1} -sL "https://www.iq.com/" | sed 's/,/\n/g' | grep "modeCode" | cut -d '"' -f4`;
+	
+    if [ -n "$result" ]; then
+        echo -n -e "\r iQiyi:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " iQiyi:\t\t\t\t${result}" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r iQiyi:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " iQiyi:\t\t\t\tNo" >> ${LOG_FILE};
+    return;
+}
+
+# Streaming Unlock Test - Netflix2
+function MediaUnlockTest_Netflix2() {
+    echo -n -e " Netflix2:\t\t\t\t->\c";
+	local result=$(curl -sL "www.netflix.com/redeem" 2>&1);
+    
+    if [[ "$result" == "curl"* ]];then
+        echo -n -e "\r Netflix2:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n" && echo -e " Netflix2:\t\t\t\tFailed (Network Connection)" >> ${LOG_FILE};
+        return;
+    fi
+    
+	local result=$(curl -sL "www.netflix.com/redeem" | sed 's/,/\n/g' | grep "countryName" | cut -d '"' -f4)
+	
+    if [ -n "$result" ]; then
+        echo -n -e "\r Netflix2:\t\t\t\t${Font_Green}${result}${Font_Suffix}\n" && echo -e " Netflix2:\t\t\t\t${result}" >> ${LOG_FILE};
+        return;
+    fi
+    
+    echo -n -e "\r Netflix2:\t\t\t\t${Font_Red}No${Font_Suffix}\n" && echo -e " Netflix2:\t\t\t\tNo" >> ${LOG_FILE};
+    return;
+}
+
 # Media Unlock Test Sites
 function MediaUnlockTest() {
     ISP ${1};
-    MediaUnlockTest_Dazn ${1};
+    MediaUnlockTest_iQiyi ${1};
     MediaUnlockTest_DisneyPlus ${1};
     MediaUnlockTest_PrimeVideo ${1};
     MediaUnlockTest_Viu ${1};
     MediaUnlockTest_Netflix ${1};
+    MediaUnlockTest_Netflix2 ${1};
     MediaUnlockTest_Steam ${1};
     MediaUnlockTest_YouTube ${1};
 }
